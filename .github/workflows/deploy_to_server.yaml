@@ -1,0 +1,137 @@
+name: Deploy to Server
+
+# Trigger the workflow on push to main branch or manual dispatch
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the repository code
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Optional: Setup Node.js if you want to add build tools later
+      # - name: Setup Node.js
+      #   uses: actions/setup-node@v4
+      #   with:
+      #     node-version: '18'
+      #     cache: 'npm'
+
+      # Optional: Install dependencies and build (if you have package.json)
+      # - name: Install dependencies
+      #   run: npm ci
+      #
+      # - name: Build project
+      #   run: npm run build
+
+      # Optimize images and minify files (optional)
+      - name: Optimize static files
+        run: |
+          # Install optimization tools
+          sudo apt-get update
+          sudo apt-get install -y optipng jpegoptim
+
+          # Optimize PNG images
+          find . -name "*.png" -exec optipng -o2 {} \;
+
+          # Optimize JPEG images
+          find . -name "*.jpg" -o -name "*.jpeg" | xargs jpegoptim --strip-all --max=85
+
+          # Minify CSS (optional - you can uncomment if needed)
+          # sudo npm install -g clean-css-cli
+          # find . -name "*.css" -not -path "./node_modules/*" -exec cleancss -o {} {} \;
+
+          # Minify JS (optional - you can uncomment if needed)
+          # sudo npm install -g uglify-js
+          # find . -name "*.js" -not -path "./node_modules/*" -exec uglifyjs {} -o {} \;
+
+      # Create deployment package
+      - name: Create deployment package
+        run: |
+          # Create a clean directory for deployment
+          mkdir -p deploy
+
+          # Copy all necessary files (excluding .git, .github, etc.)
+          rsync -av --exclude='.git' --exclude='.github' --exclude='deploy' --exclude='*.md' --exclude='.gitignore' . deploy/
+
+          # Create a tarball for deployment
+          tar -czf website.tar.gz -C deploy .
+
+      # Deploy to server via SSH
+      - name: Deploy to server
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          port: ${{ secrets.SERVER_PORT || 22 }}
+          script: |
+            # Create backup of current deployment
+            # if [ -d "/home/ug2002041/public_html/" ]; then
+            #  cp -r /home/ug2002041/public_html/ /home/ug2002041/public_html/backup-$(date +%Y%m%d-%H%M%S)
+            # fi
+
+            # Create deployment directory if it doesn't exist
+            mkdir -p /home/ug2002041/public_html/
+
+      # Copy files to server
+      - name: Copy files to server
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          port: ${{ secrets.SERVER_PORT || 22 }}
+          source: "website.tar.gz"
+          target: "/tmp/"
+
+      # Extract and setup files on server
+      - name: Extract and setup files
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          port: ${{ secrets.SERVER_PORT || 22 }}
+          script: |
+            # Extract the deployment package
+            cd /tmp
+            tar -xzf website.tar.gz -C /home/ug2002041/public_html//
+
+            # Set proper permissions
+            find /home/ug2002041/public_html/ -type f -exec chmod 644 {} \;
+            find /home/ug2002041/public_html/ -type d -exec chmod 755 {} \;
+
+            # Clean up temporary files
+            rm -f /tmp/website.tar.gz
+
+            # Restart web server (optional - uncomment if needed)
+            # systemctl reload nginx
+            # systemctl reload apache2
+
+            echo "Deployment completed successfully!"
+
+      # Optional: Health check after deployment
+      - name: Health check
+        run: |
+          sleep 10
+          # Replace with your actual domain/server URL
+          # curl -f http://sakib.cse.pstu.ac.bd || exit 1
+          echo "Health check placeholder - replace with actual URL"
+
+      # Optional: Notify deployment status
+      - name: Notify deployment status
+        if: always()
+        run: |
+          if [ "${{ job.status }}" == "success" ]; then
+            echo "✅ Deployment successful!"
+          else
+            echo "❌ Deployment failed!"
+          fi
