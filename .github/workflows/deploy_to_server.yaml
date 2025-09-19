@@ -1,4 +1,4 @@
-name: Deploy to Server
+name: Deploy to GitHub Pages and Custom Server
 
 # Trigger the workflow on push to main branch or manual dispatch
 on:
@@ -9,8 +9,37 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-and-deploy:
+  # Deploy to GitHub Pages
+  github-pages:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload to GitHub Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: "."
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+  # Deploy to custom server
+  custom-server:
+    runs-on: ubuntu-latest
+    needs: github-pages # Run after GitHub Pages deployment
 
     steps:
       # Checkout the repository code
@@ -58,8 +87,14 @@ jobs:
           # Create a clean directory for deployment
           mkdir -p deploy
 
-          # Copy all necessary files (excluding .git, .github, etc.)
+          # Copy all necessary files (excluding .git, .github, etc. but including CNAME)
           rsync -av --exclude='.git' --exclude='.github' --exclude='deploy' --exclude='*.md' --exclude='.gitignore' . deploy/
+
+          # Ensure CNAME is included in the deployment
+          if [ -f "CNAME" ]; then
+            cp CNAME deploy/
+            echo "CNAME file included in deployment"
+          fi
 
           # Create a tarball for deployment
           tar -czf website.tar.gz -C deploy .
@@ -131,7 +166,29 @@ jobs:
         if: always()
         run: |
           if [ "${{ job.status }}" == "success" ]; then
-            echo "✅ Deployment successful!"
+            echo "✅ Custom server deployment successful!"
           else
-            echo "❌ Deployment failed!"
+            echo "❌ Custom server deployment failed!"
+          fi
+
+  # Summary job to report overall status
+  deployment-summary:
+    runs-on: ubuntu-latest
+    needs: [github-pages, custom-server]
+    if: always()
+
+    steps:
+      - name: Deployment Summary
+        run: |
+          echo "=== Deployment Summary ==="
+          echo "GitHub Pages: ${{ needs.github-pages.result }}"
+          echo "Custom Server: ${{ needs.custom-server.result }}"
+
+          if [ "${{ needs.github-pages.result }}" == "success" ] && [ "${{ needs.custom-server.result }}" == "success" ]; then
+            echo "🎉 Both deployments completed successfully!"
+            echo "Your site should be available at:"
+            echo "- GitHub Pages: https://sajjadur-rahman-sakib.github.io/sakib.github.io/ (with CNAME: https://sakib.tech)"
+            echo "- Custom Server: http://sakib.cse.pstu.ac.bd"
+          else
+            echo "⚠️ One or more deployments failed. Check the logs above."
           fi
