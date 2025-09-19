@@ -103,7 +103,7 @@ jobs:
           script: |
             # Extract the deployment package
             cd /tmp
-            tar -xzf website.tar.gz -C /home/ug2002041/public_html//
+            tar -xzf website.tar.gz -C /home/ug2002041/public_html/
 
             # Set proper permissions
             find /home/ug2002041/public_html/ -type f -exec chmod 644 {} \;
