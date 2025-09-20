@@ -123,7 +123,7 @@ jobs:
         run: |
           sleep 10
           # Replace with your actual domain/server URL
-          # curl -f http://sakib.cse.pstu.ac.bd || exit 1
+          # curl -f http://sakib18.cse.pstu.ac.bd || exit 1
           echo "Health check placeholder - replace with actual URL"
 
       # Optional: Notify deployment status
