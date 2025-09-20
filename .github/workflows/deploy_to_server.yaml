@@ -41,8 +41,12 @@ jobs:
           # Optimize PNG images
           find . -name "*.png" -exec optipng -o2 {} \;
 
-          # Optimize JPEG images
-          find . -name "*.jpg" -o -name "*.jpeg" | xargs jpegoptim --strip-all --max=85
+          # Optimize JPEG images (only if they exist)
+          if find . -name "*.jpg" -o -name "*.jpeg" | grep -q .; then
+            find . -name "*.jpg" -o -name "*.jpeg" | xargs jpegoptim --strip-all --max=85
+          else
+            echo "No JPEG files found to optimize"
+          fi
 
           # Minify CSS (optional - you can uncomment if needed)
           # sudo npm install -g clean-css-cli
