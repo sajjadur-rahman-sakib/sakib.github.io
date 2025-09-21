@@ -1,0 +1,79 @@
+name: Deploy to Server
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Optimize static files
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y optipng jpegoptim
+          find . -name "*.png" -exec optipng -o2 {} \;
+          if find . -name "*.jpg" -o -name "*.jpeg" | grep -q .; then
+            find . -name "*.jpg" -o -name "*.jpeg" | xargs jpegoptim --strip-all --max=85
+          else
+            echo "No JPEG files found to optimize"
+          fi
+      - name: Create deployment package
+        run: |
+          mkdir -p deploy
+          rsync -av --exclude='.git' --exclude='.github' --exclude='deploy' --exclude='*.md' --exclude='.gitignore' . deploy/
+          tar -czf website.tar.gz -C deploy .
+
+      - name: Deploy to server
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          port: ${{ secrets.SERVER_PORT || 22 }}
+          script: |
+            mkdir -p /home/ug2002041/public_html/
+
+      - name: Copy files to server
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          port: ${{ secrets.SERVER_PORT || 22 }}
+          source: "website.tar.gz"
+          target: "/tmp/"
+
+      - name: Extract and setup files
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          port: ${{ secrets.SERVER_PORT || 22 }}
+          script: |
+            cd /tmp
+            # Clear all existing files and folders except "project" folder
+            find /home/ug2002041/public_html/ -mindepth 1 -maxdepth 1 ! -name "project" -exec rm -rf {} +
+            # Extract the new deployment package
+            tar -xzf website.tar.gz -C /home/ug2002041/public_html/
+            find /home/ug2002041/public_html/ -type f -exec chmod 644 {} \;
+            find /home/ug2002041/public_html/ -type d -exec chmod 755 {} \;
+            rm -f /tmp/website.tar.gz
+            echo "Deployment completed successfully!"
+
+      - name: Notify deployment status
+        if: always()
+        run: |
+          if [ "${{ job.status }}" == "success" ]; then
+            echo "✅ Deployment successful!"
+          else
+            echo "❌ Deployment failed!"
+          fi
