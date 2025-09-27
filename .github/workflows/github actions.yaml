@@ -44,7 +44,6 @@ jobs:
           port: ${{ secrets.SERVER_PORT || 22 }}
           script: |
             mkdir -p /home/ug2002041/public_html/
-
       - name: Copy files to server
         uses: appleboy/scp-action@v0.1.7
         with:
@@ -64,9 +63,7 @@ jobs:
           port: ${{ secrets.SERVER_PORT || 22 }}
           script: |
             cd /tmp
-            # Clear all existing files and folders except "project" folder
-            find /home/ug2002041/public_html/ -mindepth 1 -maxdepth 1 ! -name "project" -exec rm -rf {} +
-            # Extract the new deployment package
+            find /home/ug2002041/public_html/ -mindepth 1 -maxdepth 1 ! -name "project" -exec rm -rf {} +      
             tar -xzf website.tar.gz -C /home/ug2002041/public_html/
             find /home/ug2002041/public_html/ -type f -exec chmod 644 {} \;
             find /home/ug2002041/public_html/ -type d -exec chmod 755 {} \;
