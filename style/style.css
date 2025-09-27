@@ -569,7 +569,9 @@ noscript {
 
 .landing-page-container {
     width: 100%;
-    height: calc(100vh - 115px);
+    /* Prefer min-height to avoid clipping when content grows */
+    min-height: calc(100vh - 115px);
+    height: auto;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
@@ -587,7 +589,8 @@ noscript {
 }
 
 #hello-friend {
-    font-size: 3.5rem;
+    /* Fluid size for better responsiveness */
+    font-size: clamp(2.2rem, 3.2vw, 3.5rem);
     font-weight: 600;
     width: fit-content;
     display: flex;
@@ -596,12 +599,14 @@ noscript {
 
 
 #name {
-    font-size: 8rem;
+    /* Fluid size for large name heading */
+    font-size: clamp(3.2rem, 8vw, 8rem);
     width: fit-content
 }
 
 #work {
-    font-size: 6rem;
+    /* Fluid size for subtitle */
+    font-size: clamp(2.4rem, 6vw, 6rem);
     width: fit-content
 }
 
@@ -813,9 +818,10 @@ noscript {
 
 #info-para {
     width: 75%;
+    max-width: 60ch;
     padding-top: 30px;
     color: var(--color-ddd-color);
-    line-height: 20px
+    line-height: 1.6
 }
 
 .contact-btn-div {
@@ -1480,8 +1486,9 @@ footer {
 }
 
 .two-words article {
-    font-size: 3rem;
-    padding: 0px 200px 100px 200px;
+    font-size: clamp(1.8rem, 2.8vw, 3rem);
+    /* Responsive horizontal padding so it doesn't overflow on small screens */
+    padding: 0px clamp(16px, 10vw, 200px) 100px clamp(16px, 10vw, 200px);
     text-align: center;
     width: 100%;
     display: block;
@@ -2013,7 +2020,8 @@ h1, h2, h3 {
 
     .text-content {
         padding-left: 0;
-        width: 80%
+        width: 90%;
+        align-items: center;
     }
 
     #hello-friend {
@@ -2023,7 +2031,11 @@ h1, h2, h3 {
 
     #name,
     #work {
-        font-size: 5.5rem
+        /* Fluid clamp already applied above; keep line-height tighter on small screens */
+        line-height: 1.15;
+        text-align: center;
+        width: 100%;
+        justify-content: center;
     }
 
     #info-para,
@@ -2032,12 +2044,13 @@ h1, h2, h3 {
     }
 
     .contact-btn-div {
-        height: 140px;
+        height: auto;
         display: flex;
         flex-direction: column-reverse;
-        align-items: flex-start;
+        align-items: center;
         justify-content: flex-start;
-        gap: 20px
+        gap: 16px;
+        width: 100%;
     }
 
     .setting-container {
@@ -2073,7 +2086,8 @@ h1, h2, h3 {
 
     .landing-page-container {
         flex-direction: column;
-        padding: 20px;
+        padding: 20px 16px;
+        gap: 8px;
     }
 
     .text-content {
@@ -2082,8 +2096,9 @@ h1, h2, h3 {
     }
 
     .tech-stack-wrapper {
-        grid-template-columns: 1fr;
-        gap: 50px;
+        grid-template-columns: repeat(2, minmax(120px, 1fr));
+        gap: 24px;
+        width: 100%;
     }
 
     .project-box {
@@ -2132,7 +2147,7 @@ h1, h2, h3 {
     }
 
     .landing-page-container {
-        height: 85vh
+        min-height: 75vh;
     }
 
     .text-content {
@@ -2140,7 +2155,8 @@ h1, h2, h3 {
     }
 
     .project-box {
-        height: 550px
+        height: auto;
+        gap: 12px;
     }
 
     .info-div {
@@ -2148,8 +2164,10 @@ h1, h2, h3 {
     }
 
     .image-div {
-        height: 40%;
-        padding-left: 50px
+        height: auto;
+        padding-left: 0;
+        padding-right: 0;
+        padding-top: 8px;
     }
 
     .image-div img {
@@ -2158,19 +2176,20 @@ h1, h2, h3 {
 
     .tech-stack-wrapper {
         display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 60px
+        grid-template-columns: repeat(2, minmax(120px, 1fr));
+        gap: 16px;
     }
 
     .tech-stack-box {
         width: 100%;
-        height: calc(76vw/2)
+        height: calc(76vw/2);
     }
 }
 
 @media screen and (max-width:480px) {
+    /* Allow clamp() sizes to control headings; adjust spacing only on very small screens */
     #hello-friend, #name, #work {
-        font-size: 2rem;
+        line-height: 1.1;
     }
 
     .tech-stack-box {
