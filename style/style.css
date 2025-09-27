@@ -569,7 +569,6 @@ noscript {
 
 .landing-page-container {
     width: 100%;
-    /* Prefer min-height to avoid clipping when content grows */
     min-height: calc(100vh - 115px);
     height: auto;
     display: flex;
@@ -589,7 +588,6 @@ noscript {
 }
 
 #hello-friend {
-    /* Fluid size for better responsiveness */
     font-size: clamp(2.2rem, 3.2vw, 3.5rem);
     font-weight: 600;
     width: fit-content;
@@ -599,13 +597,11 @@ noscript {
 
 
 #name {
-    /* Fluid size for large name heading */
     font-size: clamp(3.2rem, 8vw, 8rem);
     width: fit-content
 }
 
 #work {
-    /* Fluid size for subtitle */
     font-size: clamp(2.4rem, 6vw, 6rem);
     width: fit-content
 }
@@ -1104,7 +1100,13 @@ noscript {
 }
 
 .about-info p {
-    line-height: 25px
+    line-height: 25px;
+    max-width: 65ch;
+    margin-bottom: 12px;
+}
+
+.about-info a {
+    align-self: flex-start;
 }
 
 .dp {
@@ -1487,7 +1489,6 @@ footer {
 
 .two-words article {
     font-size: clamp(1.8rem, 2.8vw, 3rem);
-    /* Responsive horizontal padding so it doesn't overflow on small screens */
     padding: 0px clamp(16px, 10vw, 200px) 100px clamp(16px, 10vw, 200px);
     text-align: center;
     width: 100%;
@@ -1972,7 +1973,9 @@ h1, h2, h3 {
     .info-dp-section {
         flex-direction: column;
         margin-top: 30px;
-        gap: 30px
+        gap: 24px;
+        gap: 24px;
+        align-items: center;
     }
 
     .about-info {
@@ -2031,7 +2034,6 @@ h1, h2, h3 {
 
     #name,
     #work {
-        /* Fluid clamp already applied above; keep line-height tighter on small screens */
         line-height: 1.15;
         text-align: center;
         width: 100%;
@@ -2082,6 +2084,14 @@ h1, h2, h3 {
     .navbar {
         flex-direction: column;
         align-items: center;
+    }
+    .about-info p {
+        text-align: center;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .about-info a {
+        align-self: center;
     }
 
     .landing-page-container {
@@ -2184,10 +2194,18 @@ h1, h2, h3 {
         width: 100%;
         height: calc(76vw/2);
     }
+    .about-section-container {
+        padding-top: 120px;
+    }
+    .info-dp-section {
+        gap: 20px;
+    }
+    .dp img {
+        width: 220px;
+    }
 }
 
 @media screen and (max-width:480px) {
-    /* Allow clamp() sizes to control headings; adjust spacing only on very small screens */
     #hello-friend, #name, #work {
         line-height: 1.1;
     }
