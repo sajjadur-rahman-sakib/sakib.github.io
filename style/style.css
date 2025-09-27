@@ -1746,6 +1746,13 @@ h1, h2, h3 {
     filter: invert(1);
 }
 
+.education-degree,
+.education-institute,
+.education-duration {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
 @media screen and (max-width:1150px) {
     .education-section {
         width: 80%;
@@ -1757,14 +1764,30 @@ h1, h2, h3 {
         width: 98%;
     }
     .education-item {
-        padding: 18px 12px;
+        padding: 16px 12px;
+    }
+    .education-degree {
+        font-size: 1.4rem;
+    }
+    .education-institute,
+    .education-duration {
+        font-size: 1.2rem;
+    }
+}
+
+@media screen and (max-width:430px) {
+    .education-section {
+        width: 96%;
+    }
+    .education-item {
+        padding: 14px 10px;
     }
     .education-degree {
         font-size: 1.3rem;
     }
     .education-institute,
     .education-duration {
-        font-size: 1.2rem;
+        font-size: 1.1rem;
     }
 }
 
