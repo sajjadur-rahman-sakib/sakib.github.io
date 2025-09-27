@@ -28,13 +28,9 @@ noscript {
     background-color: var(--color-dark-mode)
 }
 
-.main {
-    /* Keep internal sections from causing layout jumps without hiding content globally */
-    overflow-x: clip;
-}
+.main,
 body {
-    /* Allow horizontal scroll if anything overflows instead of clipping content */
-    overflow-x: auto;
+    overflow-x: hidden
 }
 
 #backtotopbutton article,
@@ -722,15 +718,6 @@ noscript {
     font-size: 2rem
 }
 
-/* Ensure long lines never overflow horizontally */
-#info-para,
-.about-info p,
-.ProjectDescription,
-.two-words article {
-    overflow-wrap: anywhere;
-    word-break: break-word;
-}
-
 #work div {
     display: flex;
     margin: 0 12px 0 0
@@ -1074,7 +1061,7 @@ noscript {
 .dp img,
 .dp::after,
 .dp::before {
-    width: min(300px, 80%);
+    width: 300px
 }
 
 .projects-heading-article,
@@ -1092,7 +1079,7 @@ noscript {
 .projectsHeadingP,
 .sectionHeadingP,
 .skillsHeadingP {
-    width: min(300px, 40vw);
+    width: 300px;
     height: 1px;
     background-image: linear-gradient(90deg, var(--static-heading-gradient-blue), var(--static-heading-gradient-pink))
 }
@@ -1276,9 +1263,7 @@ footer {
 
 .project-box {
     width: 100%;
-    /* Use auto height so content is never cropped; keep a comfortable minimum for wide screens */
-    min-height: 400px;
-    height: auto;
+    height: 400px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -1309,17 +1294,14 @@ footer {
 
 .image-div {
     width: 50%;
-    height: auto;
-    padding-top: 40px;
+    height: 100%;
+    padding-top: 70px;
     padding-left: 10px
 }
 
 .image-div img {
-    width: 100%;
-    height: auto;
-    object-fit: contain;
-    border-top-left-radius: 30px;
-    border-bottom-right-radius: 30px;
+    height: 100%;
+    border-top-left-radius: 30px
 }
 
 .ProjectHeading {
@@ -1332,7 +1314,6 @@ footer {
     color: var(--color-ddd-color);
     font-size: 1.7rem;
     font-weight: 400;
-    word-break: break-word;
 }
 
 .project-buttons {
@@ -1500,8 +1481,7 @@ footer {
 
 .two-words article {
     font-size: 3rem;
-    /* Replace fixed 200px side paddings with responsive clamp to avoid horizontal overflow */
-    padding: 0 clamp(16px, 6vw, 200px) 100px clamp(16px, 6vw, 200px);
+    padding: 0px 200px 100px 200px;
     text-align: center;
     width: 100%;
     display: block;
@@ -1815,11 +1795,6 @@ h1, h2, h3 {
         transform: translateY(200px);
         transition-duration: 1s
     }
-
-    /* Reduce nav spacing so tabs don’t wrap/overflow in this range */
-    .navbar-tabs-ul {
-        gap: 30px;
-    }
 }
 
 @media screen and (max-width:1150px) {
@@ -2017,21 +1992,17 @@ h1, h2, h3 {
 
     .project-box {
         flex-direction: column;
-        /* Let content decide height on mobile to prevent cropping */
-        height: auto;
-        min-height: unset;
+        height: 800px
     }
 
     .image-div,
     .info-div {
         width: 100%;
-        height: auto;
+        height: 50%
     }
 
     .image-div {
-        /* Show image above text on mobile and remove excess padding */
-        order: -1;
-        padding: 0;
+        padding: 0 0 0 80px
     }
 }
 
@@ -2103,9 +2074,6 @@ h1, h2, h3 {
     .landing-page-container {
         flex-direction: column;
         padding: 20px;
-        /* Allow content to grow taller than the viewport */
-        height: auto;
-        min-height: calc(100vh - 115px);
     }
 
     .text-content {
@@ -2130,16 +2098,6 @@ h1, h2, h3 {
 
     .footer-avatar-container {
         width: 150px;
-    }
-
-    /* On small screens, avoid clipping footer content by removing absolute overlay and fixed heights */
-    .footer-foreground {
-        position: static;
-        height: auto;
-        backdrop-filter: none;
-    }
-    .footer-background {
-        height: auto;
     }
 }
 
@@ -2174,9 +2132,7 @@ h1, h2, h3 {
     }
 
     .landing-page-container {
-        /* Prefer min-height to avoid clipping when text wraps more */
-        height: auto;
-        min-height: 85vh;
+        height: 85vh
     }
 
     .text-content {
@@ -2184,27 +2140,26 @@ h1, h2, h3 {
     }
 
     .project-box {
-        height: auto;
+        height: 550px
     }
 
     .info-div {
-        height: auto;
+        height: 60%
     }
 
     .image-div {
-        height: auto;
-        padding-left: 0;
+        height: 40%;
+        padding-left: 50px
     }
 
     .image-div img {
-        border-top-left-radius: 10px;
-        border-bottom-right-radius: 10px;
+        border-top-left-radius: 10px
     }
 
     .tech-stack-wrapper {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 40px;
+        gap: 60px
     }
 
     .tech-stack-box {
