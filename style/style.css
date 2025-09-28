@@ -1494,8 +1494,9 @@ footer {
 
 .fa-copyright,
 .footer-bottom article {
-    font-size: 1.5rem;
-    color: #b0b0b0
+    font-size: clamp(1.4rem, calc(0.9rem + 0.6vw), 1.6rem);
+    color: #b0b0b0;
+    line-height: 1.5;
 }
 
 .logos {
