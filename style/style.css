@@ -43,8 +43,7 @@ body {
 .logo,
 .navbar,
 .project-box,
-.resume-btn,
-footer {
+.resume-btn {
     overflow: hidden
 }
 
@@ -1437,17 +1436,21 @@ footer {
 footer {
     width: 100%;
     height: fit-content;
-    border-top: 1px solid var(--tech-stack-box-border-color)
+    border-top: 1px solid var(--tech-stack-box-border-color);
+    overflow: visible
 }
 
 .footer-background {
+    position: absolute;
+    inset: 0;
     width: 100%;
-    height: 100vh;
+    height: 100%;
+    min-height: 60vh;
     background-color: var(--color-dark-mode);
     display: flex;
     align-items: flex-end;
     justify-content: center;
-    z-index: 1
+    z-index: 0
 }
 
 .footer-blob {
@@ -1460,14 +1463,16 @@ footer {
 }
 
 .footer-foreground {
-    position: absolute;
-    top: 0;
+    position: relative;
     width: 100%;
-    height: 100vh;
+    min-height: 60vh;
+    height: auto;
+    padding-top: 100px;
     display: flex;
     align-items: flex-end;
     justify-content: center;
-    backdrop-filter: blur(10px)
+    backdrop-filter: blur(10px);
+    z-index: 1
 }
 
 .footercontainer {
@@ -1484,12 +1489,12 @@ footer {
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 100px
+    height: auto;
+    min-height: 60px
 }
 
 .getintouch-heading,
 .logos {
-    height: 80px;
     width: 100%;
     display: flex
 }
@@ -1527,7 +1532,9 @@ footer {
 
 .getintouch-heading {
     align-items: center;
-    justify-content: center
+    justify-content: center;
+    height: auto;
+    min-height: 60px
 }
 
 .getintouch-heading article {
@@ -1546,8 +1553,12 @@ footer {
 
 .logos {
     gap: 30px;
+    row-gap: 16px;
     justify-content: center;
-    align-items: center
+    align-items: center;
+    flex-wrap: wrap;
+    height: auto;
+    min-height: 60px
 }
 
 .SocialHandle {
@@ -1657,7 +1668,9 @@ footer {
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 80px;
+    height: auto;
+    padding: 16px;
+    text-align: center;
     z-index: 3
 }
 
