@@ -1725,16 +1725,13 @@ img {
     height: auto;
 }
 
-@media screen and (max-width:1150px) {
+@media screen and (max-width:1200px) {
     .education-section {
         width: 80%;
     }
 }
 
 @media screen and (max-width:700px) {
-    .education-section {
-        width: 98%;
-    }
     .education-item {
         padding: 16px 12px;
     }
@@ -1748,9 +1745,6 @@ img {
 }
 
 @media screen and (max-width:430px) {
-    .education-section {
-        width: 96%;
-    }
     .education-item {
         padding: 14px 10px;
     }
