@@ -1773,6 +1773,112 @@ h1, h2, h3 {
     word-break: break-word;
 }
 
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+.education-section-container {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding-top: 150px;
+}
+
+.education-section {
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.education-list {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+    margin-top: 40px;
+    align-items: center;
+}
+
+.education-item {
+    width: 100%;
+    background: linear-gradient(120deg, var(--tech-stack-box-first-color), var(--tech-stack-box-second-color));
+    border: 1px solid var(--tech-stack-box-border-color);
+    border-radius: 30px;
+    box-shadow: 0 4px 24px 0 var(--color-shadowDark);
+    padding: 32px 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-start;
+    transition: transform 0.2s, box-shadow 0.2s;
+    position: relative;
+}
+
+.education-item:hover {
+    transform: translateY(-4px) scale(1.01);
+    box-shadow: 0 8px 32px 0 var(--color-shadowDark);
+}
+
+.education-degree {
+    font-size: 2.5rem;
+    color: var(--color-light-blue);
+    font-family: 'Orbitron', 'Fira Code', monospace;
+    margin-bottom: 4px;
+    font-weight: 700;
+}
+
+.education-institute {
+    font-size: 2.0rem;
+    color: var(--color-white);
+    font-family: 'Fira Code', monospace;
+    margin-bottom: 2px;
+    font-weight: 500;
+}
+
+.education-duration {
+    font-size: 2.0rem;
+    color: #8892b0;
+    font-family: 'Fira Code', monospace;
+    margin-bottom: 8px;
+    font-weight: 400;
+}
+
+.education-item .faviconforProject {
+    width: 30px;
+    border-radius: 50%;
+    filter: invert(1);
+}
+
+@media screen and (max-width:1150px) {
+    .education-section {
+        width: 80%;
+    }
+}
+
+@media screen and (max-width:700px) {
+    .education-section {
+        width: 98%;
+    }
+
+    .education-item {
+        padding: 18px 12px;
+    }
+
+    .education-degree {
+        font-size: 1.3rem;
+    }
+
+    .education-institute,
+    .education-duration {
+        font-size: 1.2rem;
+    }
+}
+
 @media screen and (max-width:1150px) {
     .education-section {
         width: 80%;
@@ -2343,108 +2449,5 @@ h1, h2, h3 {
 
     .logos {
         gap: 20px
-    }
-}
-
-img {
-    max-width: 100%;
-    height: auto;
-}
-
-.education-section-container {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    padding-top: 150px;
-}
-
-.education-section {
-    width: 60%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-.education-list {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 50px;
-    margin-top: 40px;
-    align-items: center;
-}
-
-.education-item {
-    width: 100%;
-    background: linear-gradient(120deg, var(--tech-stack-box-first-color), var(--tech-stack-box-second-color));
-    border: 1px solid var(--tech-stack-box-border-color);
-    border-radius: 30px;
-    box-shadow: 0 4px 24px 0 var(--color-shadowDark);
-    padding: 32px 40px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    align-items: flex-start;
-    transition: transform 0.2s, box-shadow 0.2s;
-    position: relative;
-}
-
-.education-item:hover {
-    transform: translateY(-4px) scale(1.01);
-    box-shadow: 0 8px 32px 0 var(--color-shadowDark);
-}
-
-.education-degree {
-    font-size: 2.5rem;
-    color: var(--color-light-blue);
-    font-family: 'Orbitron', 'Fira Code', monospace;
-    margin-bottom: 4px;
-    font-weight: 700;
-}
-
-.education-institute {
-    font-size: 2.0rem;
-    color: var(--color-white);
-    font-family: 'Fira Code', monospace;
-    margin-bottom: 2px;
-    font-weight: 500;
-}
-
-.education-duration {
-    font-size: 2.0rem;
-    color: #8892b0;
-    font-family: 'Fira Code', monospace;
-    margin-bottom: 8px;
-    font-weight: 400;
-}
-
-.education-item .faviconforProject {
-    width: 30px;
-    border-radius: 50%;
-    filter: invert(1);
-}
-
-@media screen and (max-width:1150px) {
-    .education-section {
-        width: 80%;
-    }
-}
-
-@media screen and (max-width:700px) {
-    .education-section {
-        width: 98%;
-    }
-    .education-item {
-        padding: 18px 12px;
-    }
-    .education-degree {
-        font-size: 1.3rem;
-    }
-    .education-institute,
-    .education-duration {
-        font-size: 1.2rem;
     }
 }
