@@ -1268,6 +1268,13 @@ footer {
 .project-box-wrapper {
     width: 100%
 }
+@media screen and (min-width: 769px) {
+    .project-box-wrapper {
+        width: calc(100% + 100px);
+        margin-left: -50px;
+        margin-right: -50px;
+    }
+}
 
 .project-box {
     width: 100%;
@@ -1281,7 +1288,7 @@ footer {
 }
 
 .info-div {
-    width: 50%;
+    width: 60%;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -1301,7 +1308,7 @@ footer {
 }
 
 .image-div {
-    width: 50%;
+    width: 40%;
     height: 100%;
     padding-top: 70px;
     padding-left: 10px
